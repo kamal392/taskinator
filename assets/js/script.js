@@ -3,23 +3,31 @@ var formEl= document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
 var taskFormHandler = function (event) {
+  event.preventDefault();
 
-    event.preventDefault(); 
-    
-    var taskNameInput = document.querySelector("input[name='task-name']").value;
+  var taskNameInput = document.querySelector("input[name='task-name']").value;
 
-    var taskTypeInput = document.querySelector("select[name='task-type']").value;
- 
-// package up date as an object
+  var taskTypeInput = document.querySelector("select[name='task-type']").value;
 
-var taskDataObj = {
-  name: taskNameInput,
+  //check if input values are empty strings
 
-  type :taskTypeInput
-};
+  if (!taskNameInput || !taskTypeInput) {
+    alert("you need to fill out the task form!");
+    return false;
+  }
+  // reset form
+  formEl.reset();
+
+  // package up date as an object
+
+  var taskDataObj = {
+    name: taskNameInput,
+
+    type: taskTypeInput,
+  };
   //send it as an argument to createTaskEl
   creatTaskEl(taskDataObj);
-
+  // Reset form
 };
 
 var creatTaskEl = function(taskDataObj){
