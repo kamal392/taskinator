@@ -9,46 +9,41 @@
 </head>
 <body>
 
-    <header>
+<header>
 
-        <h1 class="page-title">Taskinator</h1>
-        <p>Click the button below to add a task!</p>
+      <h1 class="page-title">Taskinator</h1>
+      <p>Click the button below to add a task!</p>
 
        
+       <!--form-->  
+      <form id = "task-form">
        
-        <form id = "task-form">
-       <!--input placeholder for use to type task name-->
-          <div class="form-group">
+        <!--input placeholder for use to type task name-->
+      <div class="form-group">
+          <input type="text" name="task-name" placeholder="Enter Task Name "/>
+      </div>
 
-            <input type="text" name ="task-name" placeholder="Enter Task Name"/>
+        <!--adding form connect for the user to fill-->
 
-          </div>
+        <div class="form-group">
+          <select name="task-type" class="select-dropdown">
+            <option value="Disabled selected">Pick a task type</option>
+            <option value="Print">Print</option>
+            <option value="Web">Web</option>
+            <option value="Mobile">Mobile</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <button class="btn" id="save-task" type="submit">Add Task</button>
+
+        </div>
           
 
-          <!--pick a option from drop down-->
-          <div class = "form-group">
-
-            <select name="task-type" class="select-dropdown">
-
-              <option value="" disabled selected >Pick a task type</option>
-
-              <option value="Print">print</option>
-
-              <option value="Web">Web</option>
-
-              <option value="Mobile">Mobile</option>
-
-            </select>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <button class="btn" id="save-task" type="submit" >Add Task</button>
-
-           </div>
-         
         </form>
         
     </header>
@@ -65,14 +60,13 @@
 
 
         </section>
-        <script src=".assets\js\script.js"></script>
      </main>
 
 
     <footer>
         &copy;2020 by Taskinator
     </footer>
-
+    
     <script src="assets\js\script.js"></script>
 </body>
 </html>
