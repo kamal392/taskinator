@@ -10,7 +10,7 @@ var taskToDoEl = document.querySelector("#tasks-to-do");
 // Changing the function name from createTaskHandler to taskFormHandler
 // taskFormHandler function gathered the form value and place them into object and then
 // we pass the object as an argument in createTaskEl function at the bottom of the taskHandler function.
-//
+
 var taskFormHandler = function (event) {
   event.preventDefault();
   var taskNameInput = document.querySelector("input[name='task-name']").value;
@@ -18,6 +18,13 @@ var taskFormHandler = function (event) {
   var taskTypeInput = document.querySelector("select[name='task-type']").value;
   // console.log(taskTypeInput);
 
+  // check if input string are empty string.
+  if (!taskNameInput || !taskTypeInput) {
+    alert("You need to fill the task from!");
+    return false;
+  }
+  //  Resetting the form using reset(). which is only designed specifically for the form element.
+  formEl.reset();
   var taskDataObj = {
     name: taskNameInput,
     type: taskTypeInput,
