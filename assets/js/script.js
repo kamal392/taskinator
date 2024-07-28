@@ -7,12 +7,31 @@ var formEl = document.querySelector("#task-form");
 var taskToDoEl = document.querySelector("#tasks-to-do");
 
 // Created TaskHandler function to replace anonymous function.
-var createTaskHandler = function (event) {
+// Changing the function name from createTaskHandler to taskFormHandler
+// taskFormHandler function gathered the form value and place them into object and then
+// we pass the object as an argument in createTaskEl function at the bottom of the taskHandler function.
+//
+var taskFormHandler = function (event) {
   event.preventDefault();
   var taskNameInput = document.querySelector("input[name='task-name']").value;
 
   var taskTypeInput = document.querySelector("select[name='task-type']").value;
   // console.log(taskTypeInput);
+
+  var taskDataObj = {
+    name: taskNameInput,
+    type: taskTypeInput,
+  };
+  createTaskEl(taskDataObj);
+};
+
+// creating a new function
+// createTaskEl is accepting a taskDataObj as an object
+var createTaskEl = function (taskDataObj) {
+  // taskDataObj{
+  name: "Task's name";
+  type: "task's type";
+  // }
   // create list item
   var taskListEl = document.createElement("li");
   taskListEl.className = "task-item";
@@ -24,17 +43,15 @@ var createTaskHandler = function (event) {
   // add HTML content to div
   taskInfoEl.innerHTML =
     "<h3 class='task-name'>" +
-    taskNameInput +
+    taskDataObj.name +
     " </h3><span class ='task-type'>" +
-    taskTypeInput +
+    taskDataObj.type +
     "</span>";
 
   // once we get data we are appending it to the list.
   taskListEl.appendChild(taskInfoEl);
   // here we appending the entire list into the parent <ul>
   taskToDoEl.appendChild(taskListEl);
-  console.dir(taskListEl);
 };
-
-formEl.addEventListener("submit", createTaskHandler);
-console.log(createTaskHandler);
+formEl.addEventListener("submit", taskFormHandler);
+console.log(taskFormHandler);
