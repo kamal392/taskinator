@@ -3,6 +3,8 @@
 // var buttonEl = document.querySelector("button");
 // Moved event listener from button to the form element.
 // creating a variable that is going to hold Id number for each task that gets created . with an initial value of 0.
+var pageContentEl = document.querySelector("#page-content");
+
 var taskIdCounter = 0;
 
 var formEl = document.querySelector("#task-form");
@@ -121,4 +123,59 @@ var createTaskActions = function (taskId) {
 };
 
 formEl.addEventListener("submit", taskFormHandler);
-console.log(taskFormHandler);
+// console.log(taskFormHandler);
+
+// create a function to delete task .
+var deleteTask = function (taskId) {
+  // data-task-id is also applied to list element .Here , we are selecting a
+  // a list item using .task-item and further looking for a data-task-id .
+  //.task-item[data-task-id allowed us to find a different element with the same data-task-id attribute.
+
+  var taskSelected = document.querySelector(
+    ".task-item[data-task-id = '" + taskId + "']"
+  );
+  taskSelected.remove();
+  // console.log(taskSelected);
+  // console.log(taskId);
+};
+
+// function to edit task .
+var editTask = function (taskId) {
+  var taskSelected = document.querySelector(
+    ".task-item[data-task-id = '" + taskId + "']"
+  );
+  // get content from task name and type
+  var taskName = taskSelected.querySelector("h3.task-name").textContent;
+  // console.log(taskName);
+  var taskType = taskSelected.querySelector("span.task-type").textContent;
+  // console.log(taskType);
+  document.querySelector("input[name='task-name']").value = taskName;
+  document.querySelector("select[name=task-type]").value = taskType;
+  // Update the text of submit button to "Save Task";
+  document.querySelector("#save-task").textContent = "Save Task";
+
+  //This will add taskId to a data-task-id on the form itself
+  formEl.setAttribute("data-task-id", taskId);
+};
+
+// This taskButtonHandler function is going to add the
+//  delete or edit the task using taskDelete function and taskEdit function.
+var taskButtonHandler = function (event) {
+  console.log(event.target);
+  // get target element from event
+  var targetEl = event.target;
+
+  if (targetEl.matches(".edit-btn")) {
+    // we are accessing target list element using getAttribute
+    var taskId = targetEl.getAttribute("data-task-id");
+    // here we are passing the taskId to editTask function
+    editTask(taskId);
+  }
+  //  delete button was clicked
+  else if (targetEl.matches(".delete-btn"))
+    var taskId = targetEl.getAttribute("data-task-id");
+  //Here we are passing taskId to delete function .
+  deleteTask(taskId);
+};
+
+pageContentEl.addEventListener("click", taskButtonHandler);
