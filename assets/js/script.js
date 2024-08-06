@@ -12,6 +12,9 @@ var pageContentEl = document.querySelector("#page-content");
 
 var taskIdCounter = 0;
 
+// array to save the list of task items
+var tasks =[];
+
 var formEl = document.querySelector("#task-form");
 var taskToDoEl = document.querySelector("#tasks-to-do");
 
@@ -51,6 +54,7 @@ var taskFormHandler = function (event) {
     var taskDataObj = {
       name: taskNameInput,
       type: taskTypeInput,
+      status:"to do"
     };
     createTaskEl(taskDataObj);
   }
@@ -65,6 +69,19 @@ var completeEditTask = function (taskName, taskType, taskId) {
   taskSelected.querySelector("h3.task-name").textContent = taskName;
   taskSelected.querySelector("span.task-type").textContent = taskType;
   alert("Task Updated!");
+
+  // loop through tasks array and task object with new content.
+  debugger;
+  // for loop is iterates over an array starting i=0 and look for the id that pass through completeEditTask
+  // as an argument when id of the task matches with the taskId their value get saved in a taskName and taskType
+  for(var i=0; i<tasks.length;i++){
+    // taskId is a string and tasks[i].id is a number . we are using parseInt()to convert it to a number.
+  if(tasks[i].id===parseInt(taskId)){
+  tasks[i].name=taskName;
+  tasks[i].type=taskType;
+  }
+  }
+  
   formEl.removeAttribute("data-task-id");
   // putting back the text of a button from Save task to Add Task
   document.querySelector("#save-task").textContent = "Add Task";
@@ -77,6 +94,8 @@ var createTaskEl = function (taskDataObj) {
   name: "Task's name";
   type: "task's type";
   // }
+  console.log(taskDataObj);
+  // console.log(taskDataObj.status);
   // create list item
   var taskListEl = document.createElement("li");
   taskListEl.className = "task-item";
@@ -106,6 +125,10 @@ var createTaskEl = function (taskDataObj) {
 
   // here we appending the entire list into the parent <ul>
   taskToDoEl.appendChild(taskListEl);
+// getting the id od taskDataObj 
+  taskDataObj.id = taskIdCounter;
+// pushing the data into an array using push method that adds object to the end of an array.
+  tasks.push(taskDataObj);
   // Increase task counter for next Unique Id
   taskIdCounter++;
 };
@@ -171,6 +194,17 @@ var deleteTask = function (taskId) {
   taskSelected.remove();
   // console.log(taskSelected);
   // console.log(taskId);
+  var updatedTaskArr = [];
+  // loop through the current task
+  for(i=0;i<Array.length;i++){
+    //if tasks[i].id doesn't match the value of the taskId, let's keep that task and push it into the new array.
+    
+    if(tasks[i].id!==parseInt(taskId)){
+      updatedTaskArr.push(tasks[i]);
+    }
+  }
+  // reassign tasks array to be the same as updatedTaskArr
+  tasks =updatedTaskArr;
 };
 
 // function to edit task .
@@ -232,6 +266,15 @@ var tasksStatusChangeHandler = function (event) {
   else if (statusValue === "completed") {
     tasksCompletedEl.appendChild(taskSelected);
   }
+  // update task's in tasks array
+  for(var i=0; i<tasks.length;i++){
+    if(tasks[i].id===parseInt(taskId)){
+     tasks[i].status =statusValue;
+    }
+  }
+
+  
+  console.log(tasks);
 };
 
 pageContentEl.addEventListener("click", taskButtonHandler);
