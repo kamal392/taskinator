@@ -13,7 +13,7 @@ var pageContentEl = document.querySelector("#page-content");
 var taskIdCounter = 0;
 
 // array to save the list of task items
-var tasks =[];
+var tasks = [];
 
 var formEl = document.querySelector("#task-form");
 var taskToDoEl = document.querySelector("#tasks-to-do");
@@ -54,7 +54,7 @@ var taskFormHandler = function (event) {
     var taskDataObj = {
       name: taskNameInput,
       type: taskTypeInput,
-      status:"to do"
+      status: "to do",
     };
     createTaskEl(taskDataObj);
   }
@@ -74,14 +74,15 @@ var completeEditTask = function (taskName, taskType, taskId) {
   debugger;
   // for loop is iterates over an array starting i=0 and look for the id that pass through completeEditTask
   // as an argument when id of the task matches with the taskId their value get saved in a taskName and taskType
-  for(var i=0; i<tasks.length;i++){
+  for (var i = 0; i < tasks.length; i++) {
     // taskId is a string and tasks[i].id is a number . we are using parseInt()to convert it to a number.
-  if(tasks[i].id===parseInt(taskId)){
-  tasks[i].name=taskName;
-  tasks[i].type=taskType;
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].name = taskName;
+      tasks[i].type = taskType;
+    }
   }
-  }
-  
+  // calling saveTasks function to save updated task in local storage.
+  saveTasks();
   formEl.removeAttribute("data-task-id");
   // putting back the text of a button from Save task to Add Task
   document.querySelector("#save-task").textContent = "Add Task";
@@ -94,7 +95,7 @@ var createTaskEl = function (taskDataObj) {
   name: "Task's name";
   type: "task's type";
   // }
-  console.log(taskDataObj);
+  // console.log(taskDataObj);
   // console.log(taskDataObj.status);
   // create list item
   var taskListEl = document.createElement("li");
@@ -125,10 +126,12 @@ var createTaskEl = function (taskDataObj) {
 
   // here we appending the entire list into the parent <ul>
   taskToDoEl.appendChild(taskListEl);
-// getting the id od taskDataObj 
+  // getting the id of taskDataObj
   taskDataObj.id = taskIdCounter;
-// pushing the data into an array using push method that adds object to the end of an array.
+  // pushing the data into an array using push method that adds object to the end of an array.
   tasks.push(taskDataObj);
+  // calling saveTasks function to store create list item in local storage
+  saveTasks();
   // Increase task counter for next Unique Id
   taskIdCounter++;
 };
@@ -194,17 +197,19 @@ var deleteTask = function (taskId) {
   taskSelected.remove();
   // console.log(taskSelected);
   // console.log(taskId);
+  //create a new array to hold updated list of tasks.
   var updatedTaskArr = [];
-  // loop through the current task
-  for(i=0;i<Array.length;i++){
-    //if tasks[i].id doesn't match the value of the taskId, let's keep that task and push it into the new array.
-    
-    if(tasks[i].id!==parseInt(taskId)){
+  // loop through the current list of task and  look for selected list item Id.
+  // We are using parseInt method to convert taskId value from a string to number
+  for (var i = 0; i < tasks.length; i++)
+    // if tasks[i].id doesn't match the value of the taskId . lets keep that task and push it to into new array.
+    if (tasks[i].id !== parseInt(taskId)) {
       updatedTaskArr.push(tasks[i]);
     }
-  }
-  // reassign tasks array to be the same as updatedTaskArr
-  tasks =updatedTaskArr;
+  // reassign tasks array to be the same as updateTaskArr
+  tasks = updatedTaskArr;
+  // calling save task function to store tasks array in local storage after the the task has been deleted.
+  saveTasks();
 };
 
 // function to edit task .
@@ -267,14 +272,21 @@ var tasksStatusChangeHandler = function (event) {
     tasksCompletedEl.appendChild(taskSelected);
   }
   // update task's in tasks array
-  for(var i=0; i<tasks.length;i++){
-    if(tasks[i].id===parseInt(taskId)){
-     tasks[i].status =statusValue;
+  for (var i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].status = statusValue;
     }
   }
+  //calling saveTasks function to save tasks after the status has changed.
 
-  
-  console.log(tasks);
+  saveTasks();
+};
+// Function to save data to local storage.
+var saveTasks = function () {
+  // using JSON.stringify method to convert value into a string coz local storage take
+  // value in string only.
+  // localStorage.setItem("tasks",tasks);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 pageContentEl.addEventListener("click", taskButtonHandler);
